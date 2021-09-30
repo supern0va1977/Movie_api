@@ -15,53 +15,53 @@ app.use(bodyParser.json());
 let moviesTop = [
   {
     id:'1',
-    title: 'Movie, index of 0',
-    author: 'None 0'
+    title: 'Romancing the stone',
+    year: '1977'
   },
   {
     id:'2',
-    title: 'Movie, index of 1',
-    author: 'None 1'
+    title: 'good will hunting',
+    year: '1980'
   },
   {
     id:'3',
-    title: 'Movie, index of 2',
-    author: 'None 2'
+    title: 'avatar',
+    year: '1985'
   },
   {
     id:'4',
-    title: 'Movie, index of 3',
-    author: 'None 3'
+    title: 'stargate',
+    year: '1989'
   },
   {
     id:'5',
-    title: 'Movie, index of 4',
-    author: 'None 4'
+    title: 'alliens',
+    year: '1993'
   },
   {
     id:'6',
-    title: 'Movie, index of 5',
-    author: 'None 5'
+    title: 'skulls',
+    year: '1998'
   },
   {
     id:'7',
-    title: 'Movie, index of 6',
-    author: 'None 6'
+    title: 'deep6',
+    year: '2000'
   },
   {
     id:'8',
-    title: 'Movie, index of 7',
-    author: 'None 7'
+    title: 'somerandommovie',
+    year: '2002'
   },
   {
     id:'9',
-    title: 'Movie, index of 8',
-    author: 'None 8'
+    title: 'saving private ryan',
+    year: '2007'
   },
   {
     id:'10',
-    title: 'Movie, index of 9',
-    author: 'None 9'
+    title: 'lord of the rings',
+    year: '2013'
   },
 ];
 
@@ -84,12 +84,12 @@ app.post('/movies', (req, res) => {
   let newMovie = req.body;
 
   if (!newMovie.title) {
-    const message = 'you are missing the name in request body';
+    const message = 'Missing movie title in request body';
     res.status(400).send(message);
   } else {
     newMovie.id = uuid.v4();
-    moviesTop.push(newMovie);
-    res.ststus(201).send(newMovie);
+    topTenMovies.push(newMovie);
+    res.status(201).send(newMovie);
   }
 });
 
