@@ -70,51 +70,6 @@ app.get('/movies', (req, res) => {
 app.get('/', (req, res) => {
   res.send('this is test #2 of upcomming movie application that is under development');
 });
-//gets the data about a movie
-app.get('/movies/:title', (req, res) => {
-  res.json(moviesTop.find((movie) => {
-    return movie.title === req.params.title
-  }));
-});
-//adds data for a new movie
-app.post('/movies', (req, res) => {
-  let newMovie = req.body;
-
-  if (!newMovie.title) {
-    const message = 'you are missing the name in request body';
-    res.status(400).send(message);
-  } else {
-    newMovie.id = uuid.v4();
-    moviesTop.push(newMovie);
-    res.ststus(201).send(newMovie);
-  }
-});
-
-//deletes a movie from the list by ID
-app.delete('/movies/:id', (req, res) => {
-  let movie = moviesTop.find((movie) => {
-    return movie.id === req.params.id
-  });
-
-  if (movie) {
-    moviesTop = moviesTop.filter((obj) => { return obj.id !== req.params.id });
-    res.status(201).send('movie wit the ID of ' + req.params.id + ' was deleted.');
-  }
-});
-
-//update the year of a movie by its title
-app.put('/movies/:title/:year', (req, res) => {
-  let movie = moviesTop.find((movie) => {
-    return movie.title = req.params.title
-  });
-
-  if (movie) {
-    movie.year = parseInt(req.params.year);
-    res.status(201).send(`Movie ${req.params.title} was assigned the year of ${req.params.year}.`);
-  } else {
-    res.status(404).send(`Movie wit the title ${req.params.title} was not found.`);
-  }
-});
 
 //error handling
 app.use((err, req, res, next) => {
