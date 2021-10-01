@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>Movie list</title>
+    <title>Movie Console</title>
   </head>
 
   <body>
@@ -27,57 +27,167 @@
       </tr>
       <tr>
         <td>Get information about a specific movie by name</td>
-        <td>/movies/[Name]</td>
+        <td>/movies/[name]</td>
         <td>GET</td>
         <td>None</td>
         <td>
-          A JSON object holding data about a single movie,
+          A JSON object holding data about a single movie, with description,
+          gebre, director and image URL.
           Example:<br><br>
           {<br>
-            id: 1,<br>
-            title: "Good Will Hunting",<br>
-            year: 1997<br>
-          }
+            "name": "Alien",<br>
+            "descripction": "this movie is chilling",<br>
+            "genre": "scfi",<br>
+            "director": "James Cameron",<br>
+            "imageUrl": "www.link.to/movie/picture"<br>
+            }
         </td>
       </tr>
       <tr>
-        <td>Add a movie to the list</td>
-        <td>/movies</td>
-        <td>POST</td>
-        <td>
-          A JSON object holding data about the movie to add,Example:<br>
-          <br>
-          {<br>
-            title: "The Da Vinci Code",<br>
-            year: 2006<br>
-          }
-        </td>
-        <td>
-          A JSON object holding data about the movie that was added, incuding an ID:<br>
-          <br>
-          {<br>
-            id: 5,<br>
-            title: "The Da Vinci Code",<br>
-            year: 2006<br>
-          }
-        </td>
+         <td>
+             A search query returning data about a genre or author by name.
+         </td>
+         <td>
+             /movies/?genre=[genre] or /movies/?author=[author]
+         </td>
+         <td>
+              GET
+         </td>
+         <td>
+               The search query should contain "genre" or "author".
+         </td>
+         <td>
+             A JSON object holding all movies assigned to a specific genre or author.
+         </td>
       </tr>
       <tr>
-        <td>Remove a movie by ID</td>
-        <td>/movies/[ID]</td>
-        <td>DELETE</td>
-        <td>None</td>
-        <td>A text message indicating whether the movie was successfully removed</td>
-      </tr>
-      <tr>
-        <td>Update the year of a certain movie</td>
-        <td>/movies/[Title]/[year]</td>
-        <td>PUT</td>
-        <td>None</td>
-        <td>A text message indicating wheter the year of the certain movie was updated</td>
-      </tr>
-    </tbody>
-  </table>
-</body>
+         <td>
+              Return data about a director.
+          </td>
+          <td>
+              /directors/[Name]
+          </td>
+          <td>
+              GET
+          </td>
+          <td>
+                -
+          </td>
+          <td>
+              A JSON object holding data about a director containing bio, birth year and death year. Example:
+              <br><br>
+              {<br>
+              "bio": "Al Capone was the most funniest movie director ever. Especially when it comes to Mafia
+              "movies": "",<br>
+              "birth": "1927",<br>
+              "deathYear": "2027"<br>
+              }
+          </td>
+        </tr>
+        <tr>
+            <td>
+                Allow new users to register.
+            </td>
+            <td>
+                /users
+            </td>
+            <td>
+                POST
+            </td>
+             <td>
+                 A JSON object holding data containing first name, last name, age and mail adress. Example:
+                 <br><br>
+                  {<br>
+                  "firstName": "Leonardo",<br>
+                  "lastName": "DiCaprio",<br>
+                  "age": "17",<br>
+                  "mail": "leo@hotmail.com"<br>
+                   }
+               </td>
+                <td>
+                    A verification message if the registration has been succesfull or not.
+                </td>
+              </tr>
+               <tr>
+                   <td>
+                       Allow users to deregister by ID.
+                   </td>
+                   <td>
+                       /users/:id
+                   </td>
+                   <td>
+                       DELETE
+                   </td>
+                   <td>
+                       The ID of the user to be deleted should be put after /users/ in the URL."
+                   </td>
+                   <td>
+                       A verification message if the deregistration has been succesfull or not.
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       Allow users to update their user data by ID.
+                   </td>
+                   <td>
+                       /users/:id
+                   </td>
+                   <td>
+                       PUT
+                   </td>
+                   <td>
+                       A JSON object holding data conatining the user data to be changed. Example: <br><br>
+                       {<br>
+                       "firstName": "New",<br>
+                       "lastName": "Username"<br>
+                       }
+                   </td>
+                   <td>
+                       A verification message that a new username was succesfully assigned or failed.
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       Allow users to add a movie to their list of favorites.
+                   </td>
+                   <td>
+                       /users/:id/favorites
+                   </td>
+                   <td>
+                       PUT
+                   </td>
+                   <td>
+                       A JSON object holding the name of the film to be added. Example: <br><br>
+                       {<br>
+                       name: "movieName"<br>
+                       }
+                   </td>
+                   <td>
+                       A message wether the film has been added succesfully to the favorites or not.
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       Allow users to remove a movie from their list of favorites.
+                   </td>
+                   <td>
+                       /users/:id/favorites
+                   </td>
+                   <td>
+                       DELETE
+                   </td>
+                   <td>
+                       A JSON object holding the name of the film to be removed. Example: <br><br>
+                       {<br>
+                       name: "movieName"<br>
+                       }
+                   </td>
+                   <td>
+                       A message wether the film has been aremoved succesfully from the favorites or not.
+                   </td>
+               </tr>
+           </tbody>
+       </table>
+   </body>
 
 </html>

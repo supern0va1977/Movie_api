@@ -1,130 +1,193 @@
-const express = require('express'),
-morgan = require('morgan'),
-bodyParser = require('body-parser'),
-uuid = require('uuid');
+const express = require('express');
+const morgan = require('morgan');
+const uuid = require('uuid');
 
 const app = express();
 
-// Logging middleware
-app.use(morgan('common'));
-// For the sending of static files
-app.use(express.static('public'));
-// Using body-parser
-app.use(bodyParser.json());
-
-let moviesTop = [
+const topMovies = [
   {
-    id: '1',
     title: 'Romancing the stone',
-    year: '1977'
+    author: 'michael Douglas',
+    genre: 'adventure',
   },
   {
-    id:'2',
-    title: 'good will hunting',
-    year: '1980'
+    title: 'Food Will Hunting',
+    author: 'Matt Damon',
+    genre: 'drama',
   },
   {
-    id:'3',
-    title: 'avatar',
-    year: '1985'
+    title: 'Avatar',
+    author: 'James Cameron',
+    genre: 'scfi',
   },
   {
-    id:'4',
-    title: 'stargate',
-    year: '1989'
+    title: 'Transformers',
+    author: 'michael Bay',
+    genre: 'Action',
   },
   {
-    id:'5',
-    title: 'alliens',
-    year: '1993'
+    title: 'Aliens',
+    author: 'James Cameron',
+    genre: 'scfi',
   },
   {
-    id:'6',
-    title: 'skulls',
-    year: '1998'
+    title: 'Skulls',
+    author: 'John Pogue',
+    genre: 'drama',
   },
   {
-    id:'7',
-    title: 'deep6',
-    year: '2000'
+    title: 'Terminator',
+    author: 'James Cameron',
+    genre: 'Action',
   },
   {
-    id:'8',
-    title: 'somerandommovie',
-    year: '2002'
+    title: 'Titanic',
+    author: 'James Cameron',
+    genre: 'drama',
   },
   {
-    id:'9',
-    title: 'saving private ryan',
-    year: '2007'
+    title: 'Glass',
+    author: 'M. Night Shyamalan',
+    genre: 'Action',
   },
   {
-    id:'10',
-    title: 'lord of the rings',
-    year: '2013'
+    title: 'Prometheus',
+    author: 'Ridley Scott',
+    genre: 'scfi',
   },
 ];
 
-// GET requests
-app.get('/movies', (req, res) => {
-  res.json(moviesTop);
-});
-//message to users
+const users = [
+  {
+    id: '1',
+    firstName: 'Hannes',
+    lastName: 'Donel',
+    mail: 'hannesdonel@mail.de',
+  },
+];
+
+// Print data about all requests
+app.use(morgan('common'));
+
+// Parse request body
+app.use(express.json());
+
+// Make /public directory available
+app.use('/public', express.static('public'));
+
+// Routing for root
 app.get('/', (req, res) => {
-  res.send('this is test #2 of upcomming movie application that is under development');
+  res.sendFile(`${__dirname}/public/index.html`);
 });
-//gets the data about a movie
+
+// Routing for documentation
+app.get('/documentation', (req, res) => {
+  res.sendFile(`${__dirname}/public/documentation.html`);
+});
+
+// Get all movies, movies by genre or by author
+app.get('/movies', (req, res) => {
+  if ('genre' in req.query) {
+    res.json(topMovies.filter((movies) => movies.genre === req.query.genre));
+  } else if ('author' in req.query) {
+    res.json(topMovies.filter((movies) => movies.author.includes(req.query.author)));
+  } else {
+    res.json(topMovies);
+  }
+});
+
+// Get movies by name
 app.get('/movies/:title', (req, res) => {
-  res.json(moviesTop.find((movie) => {
-    return movie.title === req.params.title
-  }));
+  res.json(topMovies.find((movie) => movie.title === req.params.title));
 });
-//adds data for a new movie
-app.post('/moviesTop', (req, res) => {
-  let newMovie = req.body;
 
-  if (!newMovie.title) {
-    const message = 'Missing movie title in request body';
-    res.status(400).send(message);
+// Get directors by name
+app.get('/directors/:name', (req, res) => {
+/* eslint-disable-next-line */
+  res.json(DIRECTORS_DATABASE.find((director) => director.name === req.params.name));
+});
+
+// User registration
+app.post('/users', (req, res) => {
+  const newUser = req.body;
+  const failed = 'You must specify at least your first name and mail adress.';
+
+  if (!newUser.firstName || !newUser.mail) {
+    res.status(400).send(failed);
   } else {
-    newMovie.id = uuid.v4();
-    moviesTop.push(newMovie);
-    res.status(201).send(newMovie);
+    newUser.id = uuid.v4();
+    users.push(newUser);
+    const success = `Thank you very much. You are now listed as: <br>${JSON.stringify(newUser)}`;
+    res.status(201).send(success);
   }
 });
 
-//deletes a movie from the list by ID
-app.delete('/movies/:id', (req, res) => {
-  let movie = moviesTop.find((movie) => {
-    return movie.id === req.params.id
-  });
+// User deregistration
+app.delete('/users/:id', (req, res) => {
+  const deregUser = users.find((user) => user.id === req.params.id);
 
-  if (movie) {
-    moviesTop = moviesTop.filter((obj) => { return obj.id !== req.params.id });
-    res.status(201).send('movie wit the ID of ' + req.params.id + ' was deleted.');
-  }
-});
-
-//update the year of a movie by its title
-app.put('/movies/:title/:year', (req, res) => {
-  let movie = moviesTop.find((movie) => {
-    return movie.title = req.params.title
-  });
-
-  if (movie) {
-    movie.year = parseInt(req.params.year);
-    res.status(201).send(`Movie ${req.params.title} was assigned the year of ${req.params.year}.`);
+  if (deregUser) {
+    // Insert a function that deletes the specific user
+    res.status(201).send(`User with ID ${req.params.id} has been succesfully deleted.`);
   } else {
-    res.status(404).send(`Movie wit the title ${req.params.title} was not found.`);
+    res.status(400).send(`There is no user with ID ${req.params.id}`);
   }
 });
 
-//error handling
+// Change user data (one at a time)
+app.put('/users/:id', (req, res) => {
+  const changeUser = users.find((user) => user.id === req.params.id);
+
+  if (changeUser && req.body.firstName) {
+    changeUser.firstName = req.body.firstName;
+    res.status(201).send(`User with ID ${req.params.id} has been succesfully updated and is now:<br>${JSON.stringify(changeUser)}`);
+  } else if (changeUser && req.body.lastName) {
+    changeUser.lastName = req.body.lastName;
+    res.status(201).send(`User with ID ${req.params.id} has been succesfully updated and is now:<br>${JSON.stringify(changeUser)}`);
+  } else if (changeUser && req.body.mail) {
+    changeUser.mail = req.body.mail;
+    res.status(201).send(`User with ID ${req.params.id} has been succesfully updated and is now:<br>${JSON.stringify(changeUser)}`);
+  } else if (Object.keys(req.body).length === 0) {
+    res.status(400).send('Please specify what values to be changed.');
+  } else {
+    res.status(400).send(`There is no user with ID ${req.params.id}`);
+  }
+});
+
+// Add movie to favorites
+app.post('/users/:id/favorites/:movieTitle', (req, res) => {
+  const validUser = users.find((user) => user.id === req.params.id);
+  const validMovie = topMovies.find((movie) => movie.title === req.params.movieTitle);
+
+  if (validUser && validMovie) {
+    // Insert a function that post a movie to the user's favorites (which sould be an object)
+    res.status(201).send('Movie successfully added to your favorites list.');
+  } else {
+    res.status(400).send('Please specify a valid user and movie to be added to the user\'s favorites list');
+  }
+});
+
+// Remove movie to favorites
+app.delete('/users/:id/favorites/:movieTitle', (req, res) => {
+  const validUser = users.find((user) => user.id === req.params.id);
+  const validMovie = topMovies.find((movie) => movie.title === req.params.movieTitle);
+
+  if (validUser && validMovie) {
+    // Insert a function that post a movie to the user's favorites (which sould be an object)
+    res.status(201).send('Movie successfully deleted from your favorites list.');
+  } else {
+    res.status(400).send('Please specify a valid user and movie to be deleted from the user\'s favorites list');
+  }
+});
+
+// Error handler
 app.use((err, req, res, next) => {
-  console.log(err.stack);
-  res.status(500).send('Oh NO! you broke it now!');
+  /* eslint-disable-next-line */
+  console.error(err.stack);
+  res.status(500).send('OH NO YOU! Broke it ');
 });
-// listen for requests
+
 app.listen(8080, () => {
-  console.log('MovieApp is up and ready for service on port 8080.');
+  /* eslint-disable-next-line */
+  console.log('Server is up and running on port 8080.');
 });
