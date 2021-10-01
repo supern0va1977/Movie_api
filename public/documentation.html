@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
-    <title>Movie Navigator</title>
+    <title>Movie list</title>
   </head>
 
   <body>
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>Get full movie list max of 10</td>
+        <td>Get full movie list max of 10 for this example</td>
         <td>/movies</td>
         <td>GET</td>
         <td>None</td>
@@ -31,8 +31,8 @@
         <td>GET</td>
         <td>None</td>
         <td>
-          A JSON object holding data about a single movie,<br>
-          Example:<br>
+          A JSON object holding data about a single movie,
+          Example:<br><br>
           {<br>
             id: 1,<br>
             title: "Good Will Hunting",<br>
@@ -45,8 +45,8 @@
         <td>/movies</td>
         <td>POST</td>
         <td>
-          A JSON object holding data about the movie to add,<br>
-          Example:<br>
+          A JSON object holding data about the movie to add,Example:<br>
+          <br>
           {<br>
             title: "The Da Vinci Code",<br>
             year: 2006<br>
@@ -54,6 +54,7 @@
         </td>
         <td>
           A JSON object holding data about the movie that was added, incuding an ID:<br>
+          <br>
           {<br>
             id: 5,<br>
             title: "The Da Vinci Code",<br>
@@ -66,7 +67,7 @@
         <td>/movies/[ID]</td>
         <td>DELETE</td>
         <td>None</td>
-        <td>A ext message indicating whether the movie was successfully removed</td>
+        <td>A text message indicating whether the movie was successfully removed</td>
       </tr>
       <tr>
         <td>Update the year of a certain movie</td>

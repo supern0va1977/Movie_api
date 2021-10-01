@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 let moviesTop = [
   {
-    id:'1',
+    id: '1',
     title: 'Romancing the stone',
     year: '1977'
   },
@@ -80,7 +80,7 @@ app.get('/movies/:title', (req, res) => {
   }));
 });
 //adds data for a new movie
-app.post('/movies', (req, res) => {
+app.post('/moviesTop', (req, res) => {
   let newMovie = req.body;
 
   if (!newMovie.title) {
@@ -88,7 +88,7 @@ app.post('/movies', (req, res) => {
     res.status(400).send(message);
   } else {
     newMovie.id = uuid.v4();
-    topTenMovies.push(newMovie);
+    moviesTop.push(newMovie);
     res.status(201).send(newMovie);
   }
 });
