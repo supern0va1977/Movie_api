@@ -60,9 +60,9 @@ const topMovies = [
 const users = [
   {
     id: '1',
-    firstName: 'Hannes',
-    lastName: 'Donel',
-    mail: 'hannesdonel@mail.de',
+    firstName: 'John',
+    lastName: 'Doe',
+    mail: 'johndoel@mail.de',
   },
 ];
 
@@ -73,16 +73,11 @@ app.use(morgan('common'));
 app.use(express.json());
 
 // Make /public directory available
-app.use('/public', express.static('public'));
+app.use(express.static('public'));;
 
 // Routing for root
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/public/index.html`);
-});
-
-// Routing for documentation
-app.get('/documentation', (req, res) => {
-  res.sendFile(`${__dirname}/public/documentation.html`);
 });
 
 // Get all movies, movies by genre or by author
@@ -110,14 +105,14 @@ app.get('/directors/:name', (req, res) => {
 // User registration
 app.post('/users', (req, res) => {
   const newUser = req.body;
-  const failed = 'You must specify at least your first name and mail adress.';
+  const failed = 'You must specify a first and last name';
 
   if (!newUser.firstName || !newUser.mail) {
     res.status(400).send(failed);
   } else {
     newUser.id = uuid.v4();
     users.push(newUser);
-    const success = `Thank you very much. You are now listed as: <br>${JSON.stringify(newUser)}`;
+    const success = `Thank you listed as: <br>${JSON.stringify(newUser)}`;
     res.status(201).send(success);
   }
 });
@@ -161,7 +156,7 @@ app.post('/users/:id/favorites/:movieTitle', (req, res) => {
 
   if (validUser && validMovie) {
     // Insert a function that post a movie to the user's favorites (which sould be an object)
-    res.status(201).send('Movie successfully added to your favorites list.');
+    res.status(201).send('Movie has been added to your favorites list.');
   } else {
     res.status(400).send('Please specify a valid user and movie to be added to the user\'s favorites list');
   }
