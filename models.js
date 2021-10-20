@@ -27,17 +27,6 @@ let userSchema = mongoose.Schema({
     FavoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie'}]
 });
 
-//adding hashPassword function for hashing submitted password
-userSchema.statics.hashPassword = (password) => {
-    return bcrypt.hashSync(password, 10);
-};
-
-//adding validatePassword for comparing submitted hashed password with the hashed password in database
-/*!!! DO NOT USE ARROW FUNCTION FOR DEFINING INSTANCE METHODS, e.g: validatePassword !!!*/
-userSchema. methods.validatePassword = function(password) {
-    return bcrypt.compareSync(password, this.password);
-};
-
 //creating genre schema
 let genreSchema = mongoose.Schema({
     Name: {type: String, required: true},
