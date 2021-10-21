@@ -59,23 +59,11 @@ app.get('/', (req, res) => {
     });
   });
 
-  //Get a list of all genres
-  app.get('/genre', (req, res) => {
-      Genre.find()
-        .then(genre => {
-          res.status(201).json(genre);
-        })
-        .catch((err) => {
-          console.error(err);
-          res.status(500).send('Error: ' + err);
-        });
-    });
-
-  //get a specific genre by name
-  app.get('/genre/:Name', (req, res) => {
-    Genres.findOne({ Name: req.params.Name})
-    .then((genre) => {
-      res.json(genre.Description);
+    //get a specific genre by name
+  app.get('/genres/:Name', (req, res) => {
+    Movies.findOne({ "Genre.Name" : req.params.Name})
+    .then((movie) => {
+      res.json(movie.Genre);
     })
     .catch((err) => {
       console.error(err);
@@ -83,11 +71,11 @@ app.get('/', (req, res) => {
     });
   });
 
-  //get list of all directors
-  app.get('/directors', (req, res) => {
-    Directors.find()
-      .then((director) => {
-        res.status(201).json(movies);
+  //get director info by name
+  app.get('/directors/:Name', (req, res) => {
+    Movies.findOne({ "Director.Name" : req.params.Name})
+      .then((movie) => {
+        res.json(movie.Director);
       })
       .catch((err) => {
         console.error(err);
@@ -95,17 +83,6 @@ app.get('/', (req, res) => {
       });
   });
 
-  //get director info by name
-  app.get('/director/:Name', (req, res) =>{
-    Directors.findOne({ Name: req.params.Name})
-    .then((director) => {
-      res.json(director);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-  });
 
   //get all users
   app.get('/users', function (req, res) {

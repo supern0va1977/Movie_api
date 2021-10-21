@@ -10,7 +10,7 @@
   <table>
     <thead>
       <tr>
-        <th>Commands</th>
+        <th>Business Logic</th>
         <th>URL</th>
         <th>HTTP Method</th>
         <th>Request body data format</th>
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>Get full movie list max of 10 for this example</td>
+        <td>Get a list of all movies</td>
         <td>/movies</td>
         <td>GET</td>
         <td>None</td>
@@ -27,167 +27,203 @@
       </tr>
       <tr>
         <td>Get information about a specific movie by name</td>
-        <td>/movies/[name]</td>
+        <td>/movies/[Title]</td>
         <td>GET</td>
         <td>None</td>
         <td>
           A JSON object holding data about a single movie, with description,
-          gebre, director and image URL.
           Example:<br><br>
-          {<br>
-            "name": "Alien",<br>
-            "descripction": "this movie is chilling",<br>
-            "genre": "scfi",<br>
-            "director": "James Cameron",<br>
-            "imageUrl": "www.link.to/movie/picture"<br>
-            }
-        </td>
-      </tr>
-      <tr>
-         <td>
-             A search query returning data about a genre or author by name.
-         </td>
-         <td>
-             /movies/?genre=[genre] or /movies/?author=[author]
-         </td>
-         <td>
-              GET
-         </td>
-         <td>
-               The search query should contain "genre" or "author".
-         </td>
-         <td>
-             A JSON object holding all movies assigned to a specific genre or author.
-         </td>
-      </tr>
-      <tr>
-         <td>
-              Return data about a director.
-          </td>
-          <td>
-              /directors/[Name]
-          </td>
-          <td>
-              GET
-          </td>
-          <td>
-                -
-          </td>
-          <td>
-              A JSON object holding data about a director containing bio, birth year and death year. Example:
-              <br><br>
+          <p>
+
               {<br>
-              "bio": "Al Capone was the most funniest movie director ever. Especially when it comes to Mafia
-              "movies": "",<br>
-              "birth": "1927",<br>
-              "deathYear": "2027"<br>
-              }
-          </td>
+                  <span class="indent">"Genre": </span><br>
+                  <span class="double-indent">"Name": "Genre's name",</span><br>
+                  <span class="double-indent">"Description": "Description of the genre.",</span><br>
+                  <span class="indent">"Director: "</span><br>
+                  <span class="double-indent">"Name": "Director's Name",</span><br>
+                  <span class="double-indent">"Bio": "Director's biography",</span><br>
+                  <span class="double-indent">"Birthyear": "YYYY",</span><br>
+                  <span class="double-indent">"Deathyear": "YYYY",</span><br>
+                  <span class="indent">"_id": objectId,</span><br>
+                  <span class="indent">"Title": "Movie Name",</span><br>
+                  <span class="indent">"Description": "Movie description",</span><br>
+                  <span class="indent">"Actors": ["Actor 1", "Actor 2"],</span><br>
+                  <span class="indent">"imageUrl": "www.link.to/movie/coverartwork",</span><br>
+                  <span class="indent">"Featured": Boolean</span><br>
+                }
+            </p>
+        </tr>
+
+        <tr>
+            <td>Get data about a Genre</td>
+            <td>/genres/[Name]</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+               JSON object holding data about all the movies in specified genre.
+             </td>
+          </tr>
+          <tr>
+             <td>Get data about a movie genre by name</td>
+             <td>/genres/[Name]</td>
+             <td>GET</td>
+             <td> Specify genre name in URL. The query is case sensitive.</td>
+             <td>A JSON object holding data about a single movie director,<br>
+                 Example:<br>
+                  <p>
+                        {<br>
+                            <span class="indent">"Name": "Genre's name",</span><br>
+                            <span class="indent">"Description": "Description of the selected genre..."</span><br>
+                        }
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td>Get data about a single movie director by name</td>
+                <td>/directors/[Name]</td>
+                <td>GET</td>
+                <td> Specify director name in URL. The query is case sensitive.</td>
+                <td>A JSON object holding data about a single movie director,<br>
+                   Example:<br>
+                   <p>
+                     {<br>
+                          <span class="indent">"_id": objectId,</span><br>
+                          <span class="double-indent">"Name": "Director's Name",</span><br>
+                          <span class="double-indent">"Bio": "Director's biography",</span><br>
+                          <span class="double-indent">"Birthyear": "YYYY",</span><br>
+                          <span class="double-indent">"Deathyear": "YYYY"</span><br>
+                    }
+                </p>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Get a list of users</td>
+            <td>/users</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about all the users</td>
         </tr>
         <tr>
-            <td>
-                Allow new users to register.
-            </td>
-            <td>
-                /users
-            </td>
-            <td>
-                POST
-            </td>
-             <td>
-                 A JSON object holding data containing first name, last name, age and mail adress. Example:
-                 <br><br>
-                  {<br>
-                  "firstName": "Leonardo",<br>
-                  "lastName": "DiCaprio",<br>
-                  "age": "17",<br>
-                  "mail": "leo@hotmail.com"<br>
-                   }
-               </td>
-                <td>
-                    A verification message if the registration has been succesfull or not.
+                <td>Get data about a user by name</td>
+                <td>/users/[Name]</td>
+                <td>GET</td>
+                <td> Specify director name in URL. The query is case sensitive.</td>
+                <td>A JSON object holding data about a single user,<br>
+                    Example:<br>
+                    <p>
+                        {<br>
+                            <span class="indent">"_id": objectId,</span><br>
+                            <span class="indent">"Name": "Firstname Lastname",</span><br>
+                            <span class="indent">"Username": "Username",</span><br>
+                            <span class="indent">"Password": "Password",</span><br>
+                            <span class="indent">"Email": "example@mail.com",</span><br>
+                            <span class="indent">"Birthday": "YYYY-mm-dd",</span><br>
+                            <span class="indent">"FavoritesMovies": [MovieID1, MovieID2]</span><br>
+                        }
+                    </p>
                 </td>
-              </tr>
-               <tr>
-                   <td>
-                       Allow users to deregister by ID.
-                   </td>
-                   <td>
-                       /users/:id
-                   </td>
-                   <td>
-                       DELETE
-                   </td>
-                   <td>
-                       The ID of the user to be deleted should be put after /users/ in the URL."
-                   </td>
-                   <td>
-                       A verification message if the deregistration has been succesfull or not.
-                   </td>
-               </tr>
-               <tr>
-                   <td>
-                       Allow users to update their user data by ID.
-                   </td>
-                   <td>
-                       /users/:id
-                   </td>
-                   <td>
-                       PUT
-                   </td>
-                   <td>
-                       A JSON object holding data conatining the user data to be changed. Example: <br><br>
-                       {<br>
-                       "firstName": "New",<br>
-                       "lastName": "Username"<br>
-                       }
-                   </td>
-                   <td>
-                       A verification message that a new username was succesfully assigned or failed.
-                   </td>
-               </tr>
-               <tr>
-                   <td>
-                       Allow users to add a movie to their list of favorites.
-                   </td>
-                   <td>
-                       /users/:id/favorites
-                   </td>
-                   <td>
-                       PUT
-                   </td>
-                   <td>
-                       A JSON object holding the name of the film to be added. Example: <br><br>
-                       {<br>
-                       name: "movieName"<br>
-                       }
-                   </td>
-                   <td>
-                       A message wether the film has been added succesfully to the favorites or not.
-                   </td>
-               </tr>
-               <tr>
-                   <td>
-                       Allow users to remove a movie from their list of favorites.
-                   </td>
-                   <td>
-                       /users/:id/favorites
-                   </td>
-                   <td>
-                       DELETE
-                   </td>
-                   <td>
-                       A JSON object holding the name of the film to be removed. Example: <br><br>
-                       {<br>
-                       name: "movieName"<br>
-                       }
-                   </td>
-                   <td>
-                       A message wether the film has been aremoved succesfully from the favorites or not.
-                   </td>
-               </tr>
-           </tbody>
-       </table>
-   </body>
+            </tr>
 
+                <tr>
+                    <td>Add a new user by registering</td>
+                    <td>/users</td>
+                    <td>POST</td>
+                    <td>A JSON object holding data about the new user to add,<br>
+                        structure like this:
+                        <p>
+                            {<br>
+                                <span class="indent">"Name": "Firstname",</span><br>
+                                <span class="indent">"Username": "Username",</span><br>
+                                <span class="indent">"Password": "Password",</span><br>
+                                <span class="indent">"Email": "example@mail.com",</span><br>
+                                <span class="indent">"Birthday": "YYYY-mm-dd",</span><br>
+                            }
+                        </p>
+
+                    </td>
+                    <td>A JSON object holding data about the user that was added, including an ID:
+                        <p>
+                            {<br>
+                                <span class="indent">"_id": objectId,</span><br>
+                                <span class="indent">"Name": "Firstname",</span><br>
+                                <span class="indent">"Username": "Username",</span><br>
+                                <span class="indent">"Password": "Password",</span><br>
+                                <span class="indent">"Email": "example@mail.com",</span><br>
+                                <span class="indent">"Birthday": "YYYY-mm-dd",</span><br>
+                            }
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Allow users to add a movie to favorite list</td>
+                        <td>/users/[Username]/movies/[MovieID]</td>
+                        <td>POST</td>
+                        <td>None
+                        </td>
+                        <td>A JSON object holding data of a user info that is sucessfully updated,<br>
+                            Example:<br>
+                            <p>
+                                {<br>
+                                    <span class="indent">"_id": objectId,</span><br>
+                                    <span class="indent">"Name": "Firstname Lastname",</span><br>
+                                    <span class="indent">"Username": "Username",</span><br>
+                                    <span class="indent">"Password": "Password",</span><br>
+                                    <span class="indent">"Email": "new.email-address@mail.com",</span><br>
+                                    <span class="indent">"Birthday": "YYYY-mm-dd",</span><br>
+                                    <span class="indent">"FavoritesMovies": [MovieID1]</span><br>
+                                }
+                            </p>
+                        </td>
+                </tr>
+
+                <tr>
+                    <td>Update a certain user by username</td>
+                    <td>/users/[Username]</td>
+                    <td>PUT</td>
+                    <td>A JSON object holding data about user info to update,<br>
+                        Example:<br>
+                        <p>
+                            {<br>
+                                <span class="indent">"Email": "new.email-address@mail.com",</span>
+                            }
+                        </p>
+                    </td>
+                    <td>A JSON object holding data of a user info that is sucessfully updated,<br>
+                        Example:<br>
+                        <p>
+                            {<br>
+                                <span class="indent">"_id": objectId,</span><br>
+                                <span class="indent">"Name": "Firstname",</span><br>
+                                <span class="indent">"Username": "Username",</span><br>
+                                <span class="indent">"Password": "Password",</span><br>
+                                <span class="indent">"Email": "new.email-address@mail.com",</span><br>
+                                <span class="indent">"Birthday": "YYYY-mm-dd",</span><br>
+                            }
+                        </p>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Allow users to remove a movie from their favorite list</td>
+                    <td>/users/[Username]/movies/[MovieID]</td>
+                    <td>DELETE</td>
+                    <td>None</td>
+                    <td>A text message indicating whether the movie was successfully removed</td>
+                </tr>
+
+                <tr>
+                    <td>Allow users to de-register</td>
+                    <td>/users/[Username]</td>
+                    <td>DELETE</td>
+                    <td>None
+                    </td>
+                    <td>A text message that indicating the user was successfully de-registered.
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </body>
 </html>
