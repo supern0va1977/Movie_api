@@ -13,13 +13,18 @@ const Users = Models.User;
 //conntecting database with connection URI
 mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
-//activating body-parser
-app.use(express.static("public"));
+//activating body-parser //calls for passport and authorization
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
 //calling express
 app.use(express.json());
+//calls public folder
+app.use(express.static("public"));
 
 let myLogger = (req, res, next) => {
   console.log(req.url);
@@ -35,7 +40,7 @@ app.get('/', (req, res) => {
 });
 
   //get list of all movies
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }),(req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
