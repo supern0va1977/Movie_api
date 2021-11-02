@@ -167,30 +167,29 @@ app.post('/users',
 });
 
   // Update user info by username
-app.put('/users/:Username', passport.authenticate('jwt', { session: false }),(req, res) => {
-  Users.findOneAndUpdate(
-    {Username: req.params.Username},
-    {
-    $set: {
-      Name: req.body.Name,
-      Password: req.body.Password,
-      Mail: req.body.Mail,
-      Birthday: req.body.Birthday
-    },
-  },
-  { new: true },
-  (err, updatedUser) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    } else {
-      res.json(updatedUser);
-    }
+  app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
+      Users.findOneAndUpdate({ username: req.params.username }, { $set:
+        {
+          username: req.body.username,
+          password: req.body.password,
+          email: req.body.email,
+          birthday: req.body.birthday,
+          favoriteMovies: req.body.favoriteMovies
+        }
+      },
+      { new: true }, // This line makes sure that the updated document is returned
+      (err, updatedUser) => {
+        if(err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedUser);
+        }
+      });
   });
-});
 
 // Add a movie to a user's list of favorites
-app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { session: false }),(req, res) => {
+app.post('/users/:Username/movies/:_id', passport.authenticate('jwt', { session: false }),(req, res) => {
 Users.findOneAndUpdate({Username: req.params.Username},
   {
     $push: {FavoriteMovies: req.params.MovieID}
