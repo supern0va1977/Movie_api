@@ -120,7 +120,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }),function (req
 
 //adding a new user
 
-app.post('/users', (req, res) => {
+/*app.post('/users', (req, res) => {
   let hashedPassword = Users.hashPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
@@ -145,9 +145,9 @@ app.post('/users', (req, res) => {
       console.error(error);
       res.status(500).send('Error: ' + error);
     });
-});
+});*/
 
-/*app.post('/users',
+app.post('/users',
     [//validation for request
         check('Username', 'Username is required').isLength({min: 5}),
         check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -191,7 +191,7 @@ app.post('/users', (req, res) => {
         //response back to client letting them know that there is an error
         res.status(500).send('Error: ' + error);
     });
-});*/
+});
 
   // Update user info by username
   app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
