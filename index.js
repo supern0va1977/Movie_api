@@ -10,6 +10,14 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
+const schema = new Schema({ name: String }, {
+  writeConcern: {
+    w: 'majority',
+    j: true,
+    wtimeout: 1000
+  }
+});
+
 //including CORS that allows all domain
 const cors = require('cors');
 app.use(cors());
