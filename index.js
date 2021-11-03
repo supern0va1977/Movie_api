@@ -133,13 +133,13 @@ app.post('/users', (req, res) => {
             username: req.body.username,
             password: hashedPassword,
             email: req.body.email,
-            birthday: req.body.birthday
+            Birthday: req.body.Birthday
           })
           .then((user) => { res.status(201).json(user) })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
       }
     })
     .catch((error) => {
