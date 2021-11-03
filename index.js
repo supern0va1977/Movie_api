@@ -145,11 +145,10 @@ app.post('/users',
         } else {
             Users
             .create({
-                Name: req.body.Name,
-                Username : req.body.Username,
-                Password: hashedPassword,//using hashed password for the passowrd field
-                Email: req.body.Email,
-                Birthday: req.body.Birthday
+              Username : req.body.Username,
+              Password: hashedPassword,//using hashed password for the passowrd field
+              Email: req.body.Email,
+              Birthday: req.body.Birthday
             })//response back to client letting them know that it has been completed
             .then((user) => {res.status(201).json(user)})
             .catch((error) => {//catch any problem that is encountered
