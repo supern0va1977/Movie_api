@@ -161,6 +161,51 @@ app.post('/users',
     });
 });
 
+/*app.post('/users',
+    [//validation for request
+        check('Username', 'Username is required').isLength({min: 5}),
+        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('Password', 'Password is required').not().isEmpty(),
+        check('Email', 'Email does not appeared to be valid.').isEmail()
+    ], (req,res) => {
+
+    //check the validation object for errors
+    let errors = validationResult(req);
+
+    if(!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array()});
+    }
+
+    //hashing the submitted password
+    let hashedPassword = Users.hashPassword(req.body.Password);
+
+    Users.findOne({Username: req.body.Username})//search to see if the username is already existed
+    .then((user) => {
+        if (user) {
+            //response when the user is already existed
+            return res.status(400).send(req.body.Username + ' already exists');
+        } else {
+            Users
+            .create({
+              Username : req.body.Username,
+              Password: hashedPassword,//using hashed password for the passowrd field
+              Email: req.body.Email,
+              Birthday: req.body.Birthday
+            })//response back to client letting them know that it has been completed
+            .then((user) => {res.status(201).json(user)})
+            .catch((error) => {//catch any problem that is encountered
+                console.error(error);
+                //response back to client letting them know that there is an error
+                res.status(500).send('Error: ' + error);
+            })
+        }
+    })
+    .catch((error) => {//catch any problem that is encountered
+        console.error(error);
+        //response back to client letting them know that there is an error
+        res.status(500).send('Error: ' + error);
+    });
+});
 
   // Update user info by username
   app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
