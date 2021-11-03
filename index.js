@@ -151,14 +151,12 @@ app.post('/users',
             .then((user) => {res.status(201).json(user)})
             .catch((error) => {
                 console.error(error);
-                return done(err);
                 res.status(500).send('Error: ' + error);
             })
         }
     })
     .catch((error) => {
         console.error(error);
-        return done(err);
         res.status(500).send('Error: ' + error);
     });
 });
