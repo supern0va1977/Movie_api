@@ -119,7 +119,35 @@ app.get('/users', passport.authenticate('jwt', { session: false }),function (req
 });
 
 //adding a new user
-app.post('/users',
+
+app.post('/users', (req, res) => {
+  let hashedPassword = Users.hashPassword(req.body.password);
+  Users.findOne({ username: req.body.username }) // Search to see if a user with the requested username already exists
+    .then((user) => {
+      if (user) {
+      //If the user is found, send a response that it already exists
+        return res.status(400).send(req.body.username + ' already exists');
+      } else {
+        Users
+          .create({
+            username: req.body.username,
+            password: hashedPassword,
+            email: req.body.email,
+            birthday: req.body.birthday
+          })
+          .then((user) => { res.status(201).json(user) })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error: ' + error);
+        })
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).send('Error: ' + error);
+    });
+});
+/*app.post('/users',
     [//validation for request
         check('Username', 'Username is required').isLength({min: 5}),
         check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -163,7 +191,7 @@ app.post('/users',
         //response back to client letting them know that there is an error
         res.status(500).send('Error: ' + error);
     });
-});
+});*/
 
   // Update user info by username
   app.put('/users/:username', passport.authenticate('jwt', { session: false }), (req, res) => {
