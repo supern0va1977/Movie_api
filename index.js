@@ -157,6 +157,7 @@ app.post('/users',
     })
     .catch((error) => {
         console.error(error);
+        return done(err);
         res.status(500).send('Error: ' + error);
     });
 });
