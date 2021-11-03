@@ -120,34 +120,47 @@ app.get('/users', passport.authenticate('jwt', { session: false }),function (req
 
 //adding a new user
 
-/*app.post('/users', (req, res) => {
-  let hashedPassword = Users.hashPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username })
+app.post('/users',
+    [ //validator entries
+        check('Username', 'Username is required, must be at least 5 characters').isLength({min: 5}),
+        check('Username', 'Username contains non-alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('Password', 'Password is required').not().isEmpty(),
+        check('Email', 'Email is invalid').isEmail()
+    ], (req, res) => {
+    //check validation
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({Username: req.body.Username})
     .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
-      } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
-          })
-          .then((user) =>{res.status(201).json(user) })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          })
-      }
+        if (user) {
+            return res.status(400).send(req.body.Username + ' is already registered');
+        } else {
+            Users
+            .create({
+                Username: req.body.Username,
+                Password: hashedPassword,
+                Email: req.body.Email,
+                Birthdate: req.body.Birthdate
+            })
+            .then((user) => {res.status(201).json(user)})
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send('Error: ' + error);
+            })
+        }
     })
     .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
+        console.error(error);
+        res.status(500).send('Error: ' + error);
     });
-});*/
+});
 
-app.post('/users',
+/*app.post('/users',
     [//validation for request
         check('Username', 'Username is required').isLength({min: 5}),
         check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
@@ -213,7 +226,7 @@ app.post('/users',
           res.json(updatedUser);
         }
       });
-  });
+  });*/
 
 // Add a movie to a user's list of favorites
 app.post('/users/:Username/movies/:_id', passport.authenticate('jwt', { session: false }),(req, res) => {
