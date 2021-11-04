@@ -243,7 +243,7 @@ app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', { se
     });
 });
 
-   // Error handler
+    // Error handler
 app.use((err, req, res, next) => {
     console.log(err.stack);
     res.status(500).send('OH NO YOU BROKE IT !');
