@@ -10,7 +10,6 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-
 //including CORS that allows all domain
 const cors = require('cors');
 app.use(cors());
@@ -33,14 +32,15 @@ app.use(cors());
 //mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true });
 
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
-
 //middle ware  //activating body-parser //calls for passport and authorization
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //calling express
+
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
 app.use(express.json());
 //calls public folder
 app.use(express.static("public"));
