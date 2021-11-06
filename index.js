@@ -37,14 +37,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 //calling express
 
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
-
-app.use(express.json());
-//calls public folder
-app.use(express.static("public"));
-
 let myLogger = (req, res, next) => {
   console.log(req.url);
   next();
@@ -52,6 +44,13 @@ let myLogger = (req, res, next) => {
 
 app.use(myLogger);
 app.use(morgan('common'));
+
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
+//calls public folder
+app.use(express.static("public"));
 
   // Welcome message
 app.get('/', (req, res) => {
